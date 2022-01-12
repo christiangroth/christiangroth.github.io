@@ -51,10 +51,10 @@
  * # site header
  *      ## header nav
  *      ## mobile menu toggle 
- * # hero
- *      ## hero content
- *      ## hero social
- *      ## hero scrolldown
+ * # intro
+ *      ## intro content
+ *      ## intro social
+ *      ## intro scrolldown
  *      ## animate intro content
  * # resume 
  *      ## resume block
@@ -3426,10 +3426,10 @@ input[type="button"].btn--primary:focus {
 
 
 /* ===================================================================
- * # hero
+ * # intro
  *
  * ------------------------------------------------------------------- */
-.s-hero {
+.s-intro {
     background-color: var(--color-gray-18);
     width: 100%;
     height: 100vh;
@@ -3438,7 +3438,7 @@ input[type="button"].btn--primary:focus {
     position: relative;
 }
 
-.s-hero__bg {
+.s-intro__bg {
     display: block;
     position: absolute;
     top: 0;
@@ -3453,7 +3453,7 @@ input[type="button"].btn--primary:focus {
     background-size: cover;
 }
 
-.s-hero__bg::before {
+.s-intro__bg::before {
     display: block;
     content: "";
     position: absolute;
@@ -3467,7 +3467,7 @@ input[type="button"].btn--primary:focus {
     opacity: .5;
 }
 
-.s-hero__bg::after {
+.s-intro__bg::after {
     display: block;
     content: "";
     position: absolute;
@@ -3482,9 +3482,9 @@ input[type="button"].btn--primary:focus {
 }
 
 /* ------------------------------------------------------------------- 
- * ## hero content
+ * ## intro content
  * ------------------------------------------------------------------- */
-.s-hero__content {
+.s-intro__content {
     height: 100%;
     -ms-flex-align: center;
     -webkit-box-align: center;
@@ -3495,7 +3495,7 @@ input[type="button"].btn--primary:focus {
     position: relative;
 }
 
-.s-hero__content h1 {
+.s-intro__content h1 {
     font-size: 9.8rem;
     font-weight: 600;
     letter-spacing: -.04em;
@@ -3505,7 +3505,7 @@ input[type="button"].btn--primary:focus {
     margin-bottom: 0;
 }
 
-.s-hero__content h3 {
+.s-intro__content h3 {
     font-family: var(--font-2);
     font-weight: 400;
     font-size: 2.4rem;
@@ -3519,11 +3519,11 @@ input[type="button"].btn--primary:focus {
     position: relative;
 }
 
-.s-hero__content h3 span, .s-hero__content h3 a {
+.s-intro__content h3 span, .s-intro__content h3 a {
     color: white;
 }
 
-.s-hero__content h3::after {
+.s-intro__content h3::after {
     display: block;
     content: "";
     text-align: center;
@@ -3538,9 +3538,9 @@ input[type="button"].btn--primary:focus {
 }
 
 /* ------------------------------------------------------------------- 
- * ## hero social
+ * ## intro social
  * ------------------------------------------------------------------- */
-.s-hero__content-social {
+.s-intro__content-social {
     display: -ms-inline-flexbox;
     display: -webkit-inline-box;
     display: inline-flex;
@@ -3553,24 +3553,24 @@ input[type="button"].btn--primary:focus {
     margin-top: var(--vspace-0_5);
 }
 
-.s-hero__content-social a {
+.s-intro__content-social a {
     color: white;
     margin-right: var(--vspace-0_75);
 }
 
-.s-hero__content-social a:hover, 
-.s-hero__content-social a:focus {
+.s-intro__content-social a:hover, 
+.s-intro__content-social a:focus {
     color: var(--color-2-light);
 }
 
-.s-hero__content-social a:last-child {
+.s-intro__content-social a:last-child {
     margin-right: 0;
 }
 
 /* ------------------------------------------------------------------- 
- * ## hero scrolldown
+ * ## intro scrolldown
  * ------------------------------------------------------------------- */
-.s-hero__scroll {
+.s-intro__scroll {
     -webkit-transform: translateX(-50%);
     transform: translateX(-50%);
     position: absolute;
@@ -3578,7 +3578,7 @@ input[type="button"].btn--primary:focus {
     bottom: var(--vspace-1_25);
 }
 
-.s-hero__scroll-link {
+.s-intro__scroll-link {
     display: -ms-flexbox;
     display: -webkit-box;
     display: flex;
@@ -3595,12 +3595,12 @@ input[type="button"].btn--primary:focus {
     color: white;
 }
 
-.s-hero__scroll-link:hover .scroll-text::after, 
-.s-hero__scroll-link:focus .scroll-text::after {
+.s-intro__scroll-link:hover .scroll-text::after, 
+.s-intro__scroll-link:focus .scroll-text::after {
     width: 100%;
 }
 
-.s-hero__scroll-link .scroll-arrow {
+.s-intro__scroll-link .scroll-arrow {
     display: block;
     width: var(--vspace-1);
     height: var(--vspace-1);
@@ -3610,7 +3610,7 @@ input[type="button"].btn--primary:focus {
     position: relative;
 }
 
-.s-hero__scroll-link .scroll-arrow svg {
+.s-intro__scroll-link .scroll-arrow svg {
     height: 2rem;
     width: 2rem;
     -webkit-transform: translate3d(-50%, -50%, 0);
@@ -3620,15 +3620,15 @@ input[type="button"].btn--primary:focus {
     top: 50%;
 }
 
-.s-hero__scroll-link .scroll-arrow svg path {
+.s-intro__scroll-link .scroll-arrow svg path {
     fill: white;
 }
 
-.s-hero__scroll-link .scroll-text {
+.s-intro__scroll-link .scroll-text {
     position: relative;
 }
 
-.s-hero__scroll-link .scroll-text::after {
+.s-intro__scroll-link .scroll-text::after {
     content: "";
     display: block;
     width: 0;
@@ -3642,22 +3642,22 @@ input[type="button"].btn--primary:focus {
 }
 
 /* -------------------------------------------------------------------
- * ## animate hero content
+ * ## animate intro content
  * ------------------------------------------------------------------- */
 .ss-preload .s-header, 
-.ss-preload .s-hero {
+.ss-preload .s-intro {
     visibility: hidden;
     opacity: 0;
 }
-.ss-preload .s-hero__content {
+.ss-preload .s-intro__content {
     opacity: 0;
 }
 .ss-loaded .s-header,
-.ss-loaded .s-hero {
+.ss-loaded .s-intro {
     visibility: visible;
     opacity: 1;
 }
-.ss-loaded .s-hero__content {
+.ss-loaded .s-intro__content {
     -webkit-animation-name: fadeInUp;
     animation-name: fadeInUp;
     -webkit-animation-duration: 3s;
@@ -3670,101 +3670,101 @@ input[type="button"].btn--primary:focus {
 
 /* ------------------------------------------------------------------- 
  * responsive:
- * hero
+ * intro
  * ------------------------------------------------------------------- */
 @media screen and (max-width: 1600px) {
-    .s-hero__content h1 {
+    .s-intro__content h1 {
         font-size: 9.4rem;
     }
-    .s-hero__content h3 {
+    .s-intro__content h3 {
         font-size: 2.2rem;
     }
 }
 
 @media screen and (max-width: 1400px) {
-    .s-hero__content h1 {
+    .s-intro__content h1 {
         font-size: 8.8rem;
     }
-    .s-hero__content h3 {
+    .s-intro__content h3 {
         font-size: 2rem;
         max-width: 680px;
     }
 }
 
 @media screen and (max-width: 1200px) {
-    .s-hero__content h1 {
+    .s-intro__content h1 {
         font-size: 8.4rem;
     }
-    .s-hero__content h3 {
+    .s-intro__content h3 {
         font-size: 1.9rem;
     }
 }
 
 @media screen and (max-width: 900px) {
-    .s-hero__content h1 {
+    .s-intro__content h1 {
         font-size: 7.6rem;
     }
-    .s-hero__content h3 {
+    .s-intro__content h3 {
         font-size: 1.8rem;
     }
-    .s-hero__content-social {
+    .s-intro__content-social {
         font-size: 2.4rem;
     }
 }
 
 @media screen and (max-width: 800px) {
-    .s-hero__content {
+    .s-intro__content {
         padding-top: 12vh;
     }
-    .s-hero__content h1 {
+    .s-intro__content h1 {
         font-size: 6.8rem;
     }
-    .s-hero__content h3 {
+    .s-intro__content h3 {
         max-width: 600px;
     }
 }
 
 @media screen and (max-width: 700px) {
-    .s-hero__content h1 {
+    .s-intro__content h1 {
         font-size: 6.2rem;
     }
 }
 
 @media screen and (max-width: 600px) {
-    .s-hero__content h1 {
+    .s-intro__content h1 {
         font-size: 5.8rem;
     }
-    .s-hero__content-social {
+    .s-intro__content-social {
         font-size: 2.2rem;
     }
 }
 
 @media screen and (max-width: 500px) {
-    .s-hero__content h1 {
+    .s-intro__content h1 {
         font-size: 5.2rem;
     }
 }
 
 @media screen and (max-width: 400px) {
-    .s-hero__content h1 {
+    .s-intro__content h1 {
         font-size: 4.8rem;
     }
-    .s-hero__content h3 {
+    .s-intro__content h3 {
         font-size: 1.7rem;
     }
-    .s-hero__content h3::after {
+    .s-intro__content h3::after {
         width: 240px;
     }
-    .s-hero__content-social {
+    .s-intro__content-social {
         font-size: 2rem;
     }
-    .s-hero__content-social a {
+    .s-intro__content-social a {
         margin-right: var(--vspace-0_5);
     }
 }
 
 @media screen and (max-width: 360px) {
-    .s-hero__scroll-link .scroll-arrow {
+    .s-intro__scroll-link .scroll-arrow {
         display: none;
     }
 }

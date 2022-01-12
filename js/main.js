@@ -52,13 +52,13 @@
     const ssMoveHeader = function () {
 
         const hdr = document.querySelector('.s-header');
-        const hero = document.querySelector('#hero');
+        const intro = document.querySelector('#intro');
         let triggerHeight;
 
-        if (!(hdr && hero)) return;
+        if (!(hdr && intro)) return;
 
         setTimeout(function(){
-            triggerHeight = hero.offsetHeight - 170;
+            triggerHeight = intro.offsetHeight - 170;
         }, 300);
 
         window.addEventListener('scroll', function () {
