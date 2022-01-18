@@ -1609,6 +1609,10 @@ a:hover, a:active {
     outline: 0;
 }
 
+.subtle {
+    color: var(--color-1-lighter);
+}
+
 
 /* ===================================================================
  * # typography & general theme styles
@@ -3447,7 +3451,9 @@ input[type="button"].btn--primary:focus {
     bottom: 0;
     width: 100%;
     height: 100%;
-    background-image: url(../images/header-bg-3000.jpg);
+    /*background-image: url(../images/bg-passion.jpg);*/ /* https://unsplash.com/photos/TamMbr4okv4 */
+    /*background-image: url(../images/bg-code.jpg);*/ /* https://unsplash.com/photos/hbb6GkG6p9M */
+    background-image: url(../images/bg-pen-and-paper.jpg); /* https://unsplash.com/photos/4H9IuFBIpYM */
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -4236,7 +4242,7 @@ input[type="button"].btn--primary:focus {
     bottom: 0;
     width: 100%;
     height: 100%;
-    background-image: url(../images/testimonials-bg-3000.jpg);
+    /* background-image: url(../images/testimonials-bg-3000.jpg); */
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -4521,6 +4527,10 @@ input[type="button"].btn--primary:focus {
 
 .s-footer a {
     color: white;
+}
+
+.s-footer .ss-copyright a {
+    color: var(--color-gray-13);
 }
 
 .s-footer a:hover, .s-footer a:focus {

@@ -277,7 +277,7 @@
     * ------------------------------------------------------ */
     const ssBackToTop = function() {
 
-        const pxShow = 557;
+        const pxShow = 256;
         const goTopButton = document.querySelector(".ss-go-top");
 
         if (!goTopButton) return;
