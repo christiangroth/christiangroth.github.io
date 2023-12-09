@@ -1,0 +1,104 @@
+---
+permalink: /
+pagination:
+  include: All
+  per_page: 10
+  permalink_suffix: "blogposts/{{ num }}.html"
+  order: Desc
+  sort_by: ["published_date", "title Asc"]
+  date_index: ["Year", "Month", "Day"]
+---
+
+<section id="intro" class="s-intro target-section">
+    <div class="s-intro__bg rellax" data-rellax-speed="-7"></div>
+
+    <div class="row s-intro__content">
+        <div class="column">
+            <div class="s-intro__content-about">
+                <h1>“It compiles! Ship it!”</h1>
+                <h3 style="padding-bottom: 0px;">Thoughts and posts about this and that in the world of software architecture and development.</h3>
+
+                <ul style="margin-left: 0px; margin-bottom: 0px;">
+                    {% for post in paginator.pages %}
+                    <li><a href="{{ post.permalink }}">{{ post.title }}</a></li>
+                    {% endfor %}
+                </ul>
+
+                {% if paginator.previous_index or paginator.next_index %}
+                <div class="s-intro__content-social" style="margin-bottom: 32px;">
+                    {% if paginator.previous_index %}
+                    <a href="/{{ paginator.previous_index_permalink }}">
+                        <i class="fas fa-arrow-left" aria-hidden="true"></i>
+                    </a>
+                    {% endif %}
+                    {% if paginator.next_index %}
+                    <a href="/{{ paginator.next_index_permalink }}">
+                        <i class="fas fa-arrow-right" aria-hidden="true"></i>
+                    </a>
+                    {% endif %}
+                </div>
+                <br>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="about" class="s-about target-section">
+    <div class="row">
+        <div class="column large-3 tab-12">
+            <img class="s-about__pic" src="images/avatar.jpg" alt="">
+        </div>
+        <div class="column large-9 tab-12 s-about__content">
+            <h3>About Me</h3>
+            <p>
+                Interested in modern software architecture, development and working efficiently in heterogeneous and focused teams.
+            </p>
+            <p>
+                80s kid, music lover and software development passionist based in Dortmund, Germany.
+                Started my IT path in school.
+                Achieved Bachelor in Information Technology.
+                Dropped Master at around 80-90%.
+                Life is not about a perfect CV, but passion for what you do.
+                Software development.
+                Software architecture.
+                Is it art or engineering?
+                Creativity or hard facts?
+                So-called soft skills or frameworks and technologies?
+                Keep it balanced.
+            </p>
+            <p>Feel free to reach me through my profiles.</p>
+
+            {% include "social-links.liquid" %}
+        </div>
+    </div>
+</section>
+
+<section id="resume" class="s-resume target-section" style="padding-bottom: 0px;">
+    <div class="row s-resume__section">
+        <div class="column large-3 tab-12">
+            <h3 class="section-header-allcaps">Current Training Topics</h3>
+        </div>
+        <div class="column large-9 tab-12">
+            <div class="resume-block">
+                <p>
+                    With more than 15 years of experience, anyone could create a page-long list of technical capabilities, frameworks, and libraries.
+                    I don't think that would be useful.
+                    So I'd like to give you some insights into topics that I'm currently trying to learn or improve.
+                    Since this is largely done in my spare time, some of these topics may take some time.
+                </p>
+
+                <ul class="skill-bars-fat">
+                    {% for skill in site.data.learning.skills %}
+                    <li>
+                        <div class="progress percent{{ skill.percentage }}"></div>
+                        <strong>{{ skill.topic }}</strong>
+                    </li>
+                    {% endfor %}
+                </ul>
+
+                <p>To avoid any interpretation as to priority or focus, the topics are in alphabetical order.</p>
+            </div>
+        </div>
+    </div>
+</section>

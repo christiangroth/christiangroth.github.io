@@ -1,0 +1,8 @@
+- topic: Domain Driven Design
+  percentage: 35
+- topic: Event Driven Architecture
+  percentage: 55
+- topic: Clean/Hexagonal Architecture
+  percentage: 85
+- topic: Software Architecture Documentation
+  percentage: 70

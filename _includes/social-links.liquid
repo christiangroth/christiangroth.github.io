@@ -1,0 +1,7 @@
+<div class="s-intro__content-social">
+    {% for link in site.data.social.links %}
+    <a href="{{ link.href }}" target="_blank">
+        <i class="{{ link.icon }}" aria-hidden="true"></i>
+    </a>
+    {% endfor %}
+</div>

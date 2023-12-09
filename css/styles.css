@@ -1596,13 +1596,13 @@ body {
  * ## links
  * ------------------------------------------------------------------- */
 a {
-    color: var(--color-1);
+    color: var(--color-2);
     -webkit-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
 }
 
 a:hover, a:focus, a:active {
-    color: var(--color-2);
+    color: var(--color-2-lighter);
 }
 
 a:hover, a:active {
@@ -1610,7 +1610,7 @@ a:hover, a:active {
 }
 
 .subtle {
-    color: var(--color-1-lighter);
+    color: var(--color-2-lighter);
 }
 
 
@@ -3542,6 +3542,20 @@ input[type="button"].btn--primary:focus {
     bottom: 0;
     left: 50%;
 }
+
+.s-intro__content h5 {
+     font-family: var(--font-2);
+     font-weight: 300;
+     font-size: 2.0rem;
+     line-height: 1.333;
+     color: rgba(255, 255, 255, 0.5);
+     margin-top: var(--vspace-0_5);
+     margin-right: auto;
+     margin-left: auto;
+     padding-bottom: var(--vspace-1);
+     max-width: 800px;
+     position: relative;
+ }
 
 /* ------------------------------------------------------------------- 
  * ## intro social

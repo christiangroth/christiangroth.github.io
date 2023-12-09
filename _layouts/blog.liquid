@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+{% include "head.liquid" %}
+<body id="top" class="ss-preload">
+    <div id="preloader">
+        <div id="loader"></div>
+    </div>
+
+    <section id="intro" class="s-intro target-section" style="min-height: 480px; height: 50%;">
+        <div class="s-intro__bg rellax" data-rellax-speed="-7"></div>
+
+        <div class="row s-intro__content" style="padding-top: 0px; padding-bottom: 0px;">
+            <div class="column">
+                <div class="s-intro__content-about">
+                    <h1>{{ page.title }}</h1>
+                    <h3>{{ page.description }}</h3>
+                    {% if page.is_draft == false %}
+                    <h3 style="padding-bottom: 0px;">{{ page.published_date | date: "%Y.%m.%d" }}</h3>
+                    {% endif %}
+                    {% if page.tags %}
+                    <p style="margin-bottom: 0px;">
+                        {% for tag in page.tags %}
+                        <a href="/tags/{{ tag }}/">
+                            <i class="fas fa-tags" aria-hidden="true"></i> {{ tag }}
+                        </a>&nbsp;
+                        {% endfor %}
+                    </p>
+                    {% endif %}
+
+                    <div class="s-intro__content-social">
+                        <a href="/">
+                            <i class="fas fa-home" aria-hidden="true"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="resume" class="s-resume target-section" style="padding-top: 0px; padding-bottom: 0px;">
+        <div class="row s-resume__section">
+            <div class="column large-12 tab-12">
+                <div class="resume-block">
+                    {{ page.content }}
+                </div>
+            </div>
+        </div>
+    </section>
+
+    {% include "footer.liquid" %}
+</body>
+</html>

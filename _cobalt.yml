@@ -1,0 +1,26 @@
+# https://cobalt-org.github.io/docs/config/
+
+source: "."
+template_extensions:
+  - md
+  - liquid
+include_drafts: false
+ignore:
+  - README.md
+destination: _site
+
+site:
+  title: Christian Groth
+  base_url: https://chrgroth.de/
+  sitemap: sitemap.xml
+
+pages:
+  default:
+    layout: default.liquid
+
+posts:
+  dir: blog
+  default:
+    layout: blog.liquid
+  rss: rss.xml
+  jsonfeed: feed.json
