@@ -1,10 +1,10 @@
 ---
 is_draft: true
-description: Place a catchy subtitle here.
+description: Toller Untertitel!
 tags:
-  - sample-tag
+  - beispiel
 ---
 
-# Introduction
+# Einleitung
 
-Some fancy stuff goes here.
+...
