@@ -1,0 +1,196 @@
+/* Shared tokens and base styles */
+@font-face {
+  font-family: "Bricolage Grotesque";
+  src: url("fonts/bricolage-grotesque.woff2") format("woff2");
+  font-weight: 200 800;
+  font-display: swap;
+}
+/* Palette "Mustard": graphite with muted saffron.
+   C4 roles: --box = system/container, --box-strong = person/component, --external = external system. */
+:root {
+  --bg: #f6f5f2;
+  --surface: #ffffff;
+  --surface-2: #ecebe6;
+  --text: #1d1d1f;
+  --muted: #62615c;
+  --line: #e0ded8;
+  --accent: #8a5e00;        /* text-safe ochre */
+  --accent-strong: #6b4800;
+  --accent-soft: #f5eedc;
+  --nav-active: #ead9ad;
+  --glow-1: 34%;
+  --glow-2: 26%;
+  --glow-3: 14%;
+  --box: #2b2a29;
+  --on-box: #ffffff;
+  --box-strong: #dcb664;
+  --on-person: #2a2210;
+  --external: #b3b0aa;
+  --on-external: #1d1d1f;
+  --log-bg: #1c1c1c;
+  --log-v: #dcb664;
+  --log-d: #f0eeea;
+  --ok: #2e8b57;
+  --font: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, "Helvetica Neue", Arial, sans-serif;
+  --display: "Bricolage Grotesque", var(--font);
+  --pride: linear-gradient(90deg, #e40303, #ff8c00, #ffed00, #008026, #004dff, #750787);
+  --mono: ui-monospace, "SF Mono", "Cascadia Code", "JetBrains Mono", Consolas, monospace;
+  --radius: 10px;
+  --gutter: 16px;
+  --max: 1080px;
+  color-scheme: light;
+}
+/* dark: follows the system unless the visitor picked a theme */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141414;
+    --surface: #1c1c1c;
+    --surface-2: #262625;
+    --text: #ededeb;
+    --muted: #a3a29e;
+    --line: #333331;
+    --accent: #dcb664;
+    --accent-strong: #e9cf94;
+    --accent-soft: #312a1a;
+    --nav-active: #312a1a;
+    --glow-1: 16%;
+    --glow-2: 11%;
+    --glow-3: 9%;
+    --box: #ecebe8;
+    --on-box: #1d1d1f;
+    --external: #4a4947;
+    --on-external: #ededeb;
+    --log-bg: #0c0c0c;
+    --ok: #4cc38a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141414;
+  --surface: #1c1c1c;
+  --surface-2: #262625;
+  --text: #ededeb;
+  --muted: #a3a29e;
+  --line: #333331;
+  --accent: #dcb664;
+  --accent-strong: #e9cf94;
+  --accent-soft: #312a1a;
+  --nav-active: #312a1a;
+  --glow-1: 16%;
+  --glow-2: 11%;
+  --glow-3: 9%;
+  --box: #ecebe8;
+  --on-box: #1d1d1f;
+  --external: #4a4947;
+  --on-external: #ededeb;
+  --log-bg: #0c0c0c;
+  --ok: #4cc38a;
+  color-scheme: dark;
+}
+:root[data-theme="light"] { color-scheme: light; }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { background: var(--bg); -webkit-text-size-adjust: 100%; scroll-behavior: smooth; scrollbar-color: var(--line) transparent; accent-color: var(--accent); }
+::selection { background: var(--box-strong); color: var(--on-person); }
+/* inside mustard boxes the default highlight would vanish */
+.per ::selection, .cont.alt ::selection { background: color-mix(in srgb, var(--on-person) 30%, var(--box-strong)); color: var(--on-person); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+body {
+  margin: 0;
+  color: var(--text);
+  font: 16px/1.6 var(--font);
+  overflow-x: hidden;
+}
+/* slow mustard shimmer behind everything; pure CSS, so it scales to any screen */
+html::before {
+  content: ""; position: fixed; inset: -25%; z-index: -1; pointer-events: none;
+  background:
+    radial-gradient(40% 35% at 25% 30%, color-mix(in srgb, var(--box-strong) var(--glow-1), transparent), transparent 70%),
+    radial-gradient(35% 40% at 75% 60%, color-mix(in srgb, var(--box-strong) var(--glow-2), transparent), transparent 70%),
+    radial-gradient(30% 30% at 50% 90%, color-mix(in srgb, var(--accent) var(--glow-3), transparent), transparent 70%);
+  animation: shimmer 38s ease-in-out infinite alternate;
+}
+@keyframes shimmer {
+  0%   { transform: translate3d(0, 0, 0) rotate(0deg) scale(1); }
+  50%  { transform: translate3d(6%, -4%, 0) rotate(12deg) scale(1.08); }
+  100% { transform: translate3d(-5%, 5%, 0) rotate(-8deg) scale(1.04); }
+}
+@media (prefers-reduced-motion: reduce) { html::before { animation: none; } }
+/* fine film grain so large dark areas don't look flat */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: .07;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+img, svg { max-width: 100%; display: block; }
+a { color: var(--accent); text-underline-offset: 3px; }
+h1, h2, h3 { font-family: var(--display); line-height: 1.1; margin: 0 0 .5em; text-wrap: balance; }
+p { margin: 0 0 1em; }
+code, .mono { font-family: var(--mono); }
+
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+
+.tag {
+  display: inline-block;
+  font: 12px/1 var(--mono);
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  color: var(--muted);
+  border: 1px solid var(--line);
+}
+.tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 12px; }
+
+.pill {
+  display: inline-block;
+  font: 600 11px/1 var(--mono);
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.badge {
+  display: inline-flex;
+  font: 12px/1 var(--mono);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.badge span { padding: 6px 8px; }
+.badge span:first-child { background: #2b2a29; color: #fff; }
+.badge span:last-child { background: var(--ok); color: #fff; }
+
+.icon-links { display: flex; gap: 12px; flex-wrap: wrap; }
+.icon-links a {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+}
+.icon-links a:hover { border-color: var(--accent); }
+.icon-links svg { width: 18px; height: 18px; fill: currentColor; }
+
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+
+.theme-toggle {
+  flex: none; display: grid; place-items: center; width: 38px; height: 38px; padding: 0;
+  border: 1px solid var(--line); border-radius: 999px; background: var(--surface); color: var(--text); cursor: pointer;
+}
+.theme-toggle:hover { border-color: var(--accent); }
+.theme-toggle svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.theme-toggle .moon { display: none; }
+:root[data-theme="dark"] .theme-toggle .sun { display: none; }
+:root[data-theme="dark"] .theme-toggle .moon { display: block; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle .sun { display: none; }
+  :root:not([data-theme="light"]) .theme-toggle .moon { display: block; }
+}
