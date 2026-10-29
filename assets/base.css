@@ -103,7 +103,8 @@ body {
 }
 /* slow mustard shimmer behind everything; pure CSS, so it scales to any screen */
 html::before {
-  content: ""; position: fixed; inset: -25%; z-index: -1; pointer-events: none;
+  content: ""; position: fixed; top: -25lvh; left: -25vw; width: 150vw; height: 150lvh; z-index: -1; pointer-events: none;
+  will-change: transform;
   background:
     radial-gradient(40% 35% at 25% 30%, color-mix(in srgb, var(--box-strong) var(--glow-1), transparent), transparent 70%),
     radial-gradient(35% 40% at 75% 60%, color-mix(in srgb, var(--box-strong) var(--glow-2), transparent), transparent 70%),
@@ -118,7 +119,7 @@ html::before {
 @media (prefers-reduced-motion: reduce) { html::before { animation: none; } }
 /* fine film grain so large dark areas don't look flat */
 body::before {
-  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: .07;
+  content: ""; position: fixed; top: 0; left: 0; width: 100vw; height: 100lvh; z-index: -1; pointer-events: none; opacity: .07;
   background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 .5 0 0 0 0 .5 0 0 0 0 .5 0 0 0 1 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 img, svg { max-width: 100%; display: block; }
