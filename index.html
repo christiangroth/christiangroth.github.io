@@ -1,138 +1,546 @@
 <!DOCTYPE html>
-<html class="no-js" lang="en">
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Christian Groth</title>
-    <meta name="author" content="Christian Groth">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Christian Groth</title>
+<meta name="description" content="Christian Groth, Software Architect & Engineer. Shipped today, still changeable tomorrow.">
+<meta property="og:title" content="Christian Groth | Software Architect & Engineer">
+<meta property="og:description" content="Shipped today, still changeable tomorrow.">
+<meta property="og:image" content="https://chrgroth.de/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="assets/fonts/bricolage-grotesque.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="stylesheet" href="assets/base.css?v=2">
+<script>
+  // apply a saved theme before first paint; without one the system setting wins
+  try { const t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+<style>
+  /* ---------- top bar: brand, zoom path, menu ---------- */
+  .bar {
+    position: sticky; top: 0; z-index: 40;
+    /* opaque on purpose: a backdrop blur over the animated diagram made phones stutter */
+    background: color-mix(in srgb, var(--bg) 97%, transparent);
+  }
+  .bar::after { content: ""; display: block; height: 3px; background: var(--pride); }
+  .bar .wrap { display: flex; align-items: center; gap: 12px; height: 54px; }
+  .brand { display: inline-flex; white-space: nowrap; flex: none; align-items: center; gap: 10px; color: var(--text); text-decoration: none; font: 700 17px/1 var(--display); letter-spacing: -.01em; }
+  .brand svg { width: 30px; height: 30px; }
+  .here { display: flex; align-items: center; gap: 8px; margin-left: auto; color: var(--muted); font-size: 14px; min-width: 0; }
+  .here svg { width: 18px; height: 18px; flex: none; }
+  .here svg rect { fill: none; stroke: var(--muted); stroke-width: 1.4; transition: fill .3s, stroke .3s; }
+  .here svg rect.on { fill: var(--box); stroke: var(--box); }
+  .here span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text); font-weight: 600; }
 
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  .menu { position: relative; }
+  .menu summary {
+    list-style: none; cursor: pointer; user-select: none;
+    padding: 8px 12px; border: 1px solid var(--line); border-radius: 999px;
+    font-size: 14px; font-weight: 600; background: var(--surface);
+  }
+  .menu summary::-webkit-details-marker { display: none; }
+  .menu[open] summary { border-color: var(--accent); }
+  .menu nav {
+    position: absolute; right: 0; top: calc(100% + 10px); width: min(260px, calc(100vw - 32px));
+    background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 8px;
+    box-shadow: 0 18px 40px -12px rgba(0,0,0,.28);
+  }
+  .menu nav a, .inline-nav a {
+    display: block; padding: 10px 12px; border-radius: 8px; color: var(--text); text-decoration: none; font-size: 15px;
+  }
+  .menu nav a:hover, .menu nav a.active { background: var(--nav-active); }
+  .menu-theme {
+    display: block; width: 100%; margin-top: 4px; padding: 12px 12px 8px; border: 0; border-top: 1px solid var(--line);
+    background: none; color: var(--accent); font: 600 15px/1.2 var(--font); text-align: left; cursor: pointer;
+  }
+  .bar .theme-toggle { display: none; }
+  .inline-nav { display: none; }
 
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/vendor.css">
+  /* ---------- sections ---------- */
+  main > section { padding: 64px 0; scroll-margin-top: 57px; }
+  main > section + section { border-top: 1px solid var(--line); }
+  h2 { font-size: clamp(30px, 7.4vw, 46px); font-weight: 700; letter-spacing: -.025em; margin-bottom: 14px; }
+  .h-sub { display: block; margin-top: 6px; font: 500 clamp(17px, 4.6vw, 21px)/1.3 var(--display); letter-spacing: -.005em; color: var(--muted); }
+  main [id] { scroll-margin-top: 70px; }
+  .lead { color: var(--muted); font-size: 17px; margin-bottom: 28px; }
 
-    <script defer src="js/vendor/fontawesome/all.min.js"></script>
+  /* ---------- hero ---------- */
+  #context { padding-top: 20px; overflow: clip; }
+  .hero-grid { display: grid; gap: 8px; }
+  .hero h1 { font-size: clamp(40px, 11vw, 68px); font-weight: 800; letter-spacing: -.035em; margin: 0 0 6px; }
+  .hero .role { font-size: 16px; color: var(--muted); margin-bottom: 18px; }
+  .hero .role { display: flex; align-items: center; gap: 14px; }
+  .hero .role strong { color: var(--text); }
+  .avatar { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; flex: none; box-shadow: 0 0 0 2px var(--bg), 0 0 0 4px var(--box-strong); }
+  .hero .claim { font: 600 clamp(21px, 5.6vw, 28px)/1.3 var(--display); letter-spacing: -.01em; margin-bottom: 14px; max-width: 24ch; }
+  .hero .sub { color: var(--muted); max-width: 46ch; }
 
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <link rel="manifest" href="site.webmanifest">
+  .ctx { width: 100%; max-width: 460px; margin: 0 auto; }
+  .ctx text { font-family: var(--font); pointer-events: none; }
+  .n-title { font-size: 12px; font-weight: 700; fill: var(--on-box); }
+  .n-type { font-size: 9px; fill: var(--on-box); opacity: .75; }
+  .per .n-title, .per .n-type { fill: var(--on-person); }
+  .ext-t .n-title, .ext-t .n-type { fill: var(--on-external); }
+  .e-label { font-size: 9.5px; fill: var(--muted); paint-order: stroke; stroke: var(--bg); stroke-width: 4px; stroke-linejoin: round; }
+  .edge { stroke: var(--muted); stroke-width: 1.3; stroke-dasharray: 4 4; fill: none; animation: flow 1.4s linear infinite; }
+  @keyframes flow { to { stroke-dashoffset: -16; } }
+  .ctx .sys rect { filter: drop-shadow(0 6px 14px color-mix(in srgb, var(--box) 40%, transparent)); }
+
+  .badge { margin-top: 4px; }
+
+  /* ---------- L2: container diagram ---------- */
+  .boundary {
+    position: relative; border: 2px dashed color-mix(in srgb, var(--muted) 60%, transparent); border-radius: 16px;
+    padding: 14px 14px 46px; display: grid; gap: 12px;
+  }
+  .boundary > .b-label { position: absolute; left: 16px; bottom: 14px; font-size: 13px; color: var(--muted); }
+  .boundary > .b-label strong { color: var(--text); }
+  .cont { background: var(--box); color: var(--on-box); border-radius: 12px; padding: 18px 18px 16px; }
+  .cont h3 { font-size: 21px; font-weight: 700; letter-spacing: -.015em; margin: 0 0 2px; }
+  .cont .tech { font-size: 13px; opacity: .78; margin-bottom: 10px; }
+  .cont p { margin: 0; }
+  .cont.alt { background: var(--box-strong); color: var(--on-person); }
+
+  /* ---------- L3: work ---------- */
+  .features { display: grid; gap: 16px; }
+  .feature { padding: 22px; border: 1px solid var(--line); border-radius: 18px; background: var(--surface); }
+  .feature h3 { font-size: 26px; font-weight: 700; letter-spacing: -.02em; margin: 0 0 4px; }
+  .feature h3 a { color: inherit; text-decoration: none; }
+  .feature .tech { color: var(--muted); font-size: 14px; margin-bottom: 16px; }
+  .prd { margin: 0; display: grid; gap: 14px; }
+  .prd dt { font-weight: 700; font-size: 14px; color: var(--accent); margin-bottom: 2px; }
+  .prd dd { margin: 0; }
+  .comp-map { max-width: 440px; width: 100%; margin: 0 auto 28px; }
+  .comp-map text { font-family: var(--font); pointer-events: none; }
+  .comp-map .arrow { stroke: var(--muted); stroke-width: 1.4; fill: none; }
+  .comp-map .n-type { font-size: 8.5px; }
+  .node-frame { fill: none; stroke: color-mix(in srgb, var(--muted) 60%, transparent); stroke-width: 2; stroke-dasharray: 6 5; }
+  .frame-title { font-size: 13px; font-weight: 700; fill: var(--text); }
+  .frame-type { font-size: 9px; fill: var(--muted); }
+  .more { display: inline-flex; gap: 6px; margin-top: 18px; font-weight: 700; }
+
+  .rows { list-style: none; margin: 28px 0 0; padding: 0; }
+  .rows li { padding: 18px 0; border-top: 1px solid var(--line); }
+  .rows li:last-child { border-bottom: 1px solid var(--line); }
+  .rows a { color: var(--text); text-decoration: none; display: block; }
+  .rows a:hover h3 { color: var(--accent); }
+  .rows h3 { font-size: 20px; font-weight: 700; letter-spacing: -.015em; margin: 0 0 2px; display: flex; justify-content: space-between; gap: 12px; transition: color .2s; }
+  .rows h3::after { content: "→"; color: var(--accent); font-family: var(--font); }
+  .rows .tech { font-size: 13px; color: var(--muted); margin-bottom: 6px; }
+  .rows p { margin: 0; color: var(--muted); }
+
+  /* ---------- principles ---------- */
+  .principles { list-style: none; margin: 0; padding: 0; }
+  .principles li { padding: 20px 0; border-top: 1px solid var(--line); display: grid; gap: 6px; }
+  .principles strong { font: 700 20px/1.2 var(--display); letter-spacing: -.01em; }
+  .principles span { color: var(--muted); }
+
+  /* ---------- exploring ---------- */
+    content: ""; position: absolute; left: -30px; top: 6px;
+    width: 14px; height: 14px; border-radius: 50%; background: var(--bg); border: 3px solid var(--box);
+  }
+
+  /* ---------- changelog ---------- */
+  .log {
+    padding: 20px; border-radius: 14px; overflow-x: auto;
+    background: var(--log-bg); color: #e8e2d8; font: 14px/1.75 var(--mono); font-variant-numeric: tabular-nums;
+  }
+  .log .v { color: var(--log-v); font-weight: 700; }
+  .log .c { color: #8c857a; }
+  .log div { padding-left: 1.2em; text-indent: -1.2em; }
+  .log div:has(.v):not(:first-child) { margin-top: .8em; }
+
+  /* ---------- off the clock ---------- */
+  .off-grid { display: grid; gap: 28px; align-items: start; }
+  .person { display: flex; gap: 16px; align-items: center; margin-bottom: 22px; }
+  .portrait {
+    width: 92px; height: 92px; border-radius: 50%; flex: none; object-fit: cover;
+    box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--box-strong);
+  }
+  .person strong { font: 700 20px/1.2 var(--display); display: block; }
+  .person span { color: var(--muted); font-size: 14px; }
+  .quote { position: relative; margin: 0; padding-top: 34px; font: 500 clamp(19px, 5vw, 23px)/1.4 var(--display); letter-spacing: -.01em; }
+  .quote::before { content: "“"; position: absolute; top: -14px; left: -4px; font: 800 72px/1 var(--display); color: var(--accent); }
+  .ext-list { display: grid; gap: 12px; }
+  .ext { background: var(--external); color: var(--on-external); border-radius: 12px; padding: 16px 18px; }
+  .ext h3 { font-size: 19px; font-weight: 700; margin: 0 0 2px; }
+  .ext .tech { font-size: 13px; opacity: .85; margin-bottom: 6px; }
+  .ext p { margin: 0; }
+  .ext a { color: inherit; }
+
+  footer { padding: 28px 0 40px; color: var(--muted); font-size: 14px; border-top: 1px solid var(--line); }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 6px 16px; justify-content: space-between; }
+
+  @media (min-width: 760px) {
+    main > section { padding: 96px 0; }
+    .hero-grid { grid-template-columns: 1fr 1.05fr; align-items: center; gap: 40px; }
+    .hero-grid .diagram { order: 2; }
+    .boundary { grid-template-columns: 1fr 1fr; padding: 18px 18px 50px; }
+    .features { grid-template-columns: 1fr 1fr; row-gap: 0; }
+    /* subgrid keeps title, Problem/Decision/Result and the GitHub link on the same lines in both cards */
+    .feature { padding: 28px; display: grid; grid-row: span 6; grid-template-rows: subgrid; }
+    .feature .prd { display: contents; }
+    .feature .prd > div + div { margin-top: 14px; }
+    .feature .more { justify-self: start; align-self: start; }
+    .principles li { grid-template-columns: 1fr 1.1fr; gap: 24px; align-items: baseline; }
+    .off-grid { grid-template-columns: 1.2fr 1fr; gap: 48px; }
+  }
+  @media (min-width: 960px) {
+    .menu { display: none; }
+    .here { display: none; }
+    .inline-nav { display: flex; margin-left: auto; gap: 2px; }
+    .inline-nav a { font-size: 14px; padding: 8px 10px; color: var(--muted); }
+    .inline-nav a.active { color: var(--text); background: var(--nav-active); }
+    .bar .theme-toggle { display: grid; }
+  }
+</style>
 </head>
-<body id="top" class="ss-preload">
-    <div id="preloader">
-        <div id="loader"></div>
+<body>
+
+<header class="bar">
+  <div class="wrap">
+    <a class="brand" href="#context" aria-label="Christian Groth, back to top">
+      <svg viewBox="0 0 30 30" aria-hidden="true"><rect x="1" y="1" width="28" height="28" rx="7" fill="var(--box)"/><text x="15" y="20" text-anchor="middle" font-family="Bricolage Grotesque, sans-serif" font-weight="800" font-size="14" fill="var(--on-box)">cg</text></svg>
+      Christian Groth
+    </a>
+    <div class="here" aria-live="polite">
+      <svg viewBox="0 0 18 18" aria-hidden="true"><title>C4 zoom level</title><rect x="1" y="1" width="16" height="16" rx="3"/><rect x="4" y="4" width="10" height="10" rx="2"/><rect x="6.5" y="6.5" width="5" height="5" rx="1.2"/><rect x="8.2" y="8.2" width="1.6" height="1.6" rx=".5"/></svg>
+      <span id="here">Context</span>
     </div>
+    <details class="menu">
+      <summary>Menu</summary>
+      <nav aria-label="Sections"></nav>
+    </details>
+    <nav class="inline-nav" aria-label="Sections">
+      <a href="#context">Context</a>
+      <a href="#containers">Containers</a>
+      <a href="#components">Components</a>
+      <a href="#principles">Principles</a>
+      <a href="#changelog">Changelog</a>
+      <a href="#external">External Systems</a>
+      <a href="#interfaces">Interfaces</a>
+    </nav>
+    <button class="theme-toggle" type="button" aria-label="Switch between light and dark mode">
+      <svg class="sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></svg>
+      <svg class="moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14.2A8.5 8.5 0 0 1 9.8 3.5a8.5 8.5 0 1 0 10.7 10.7z"/></svg>
+    </button>
+  </div>
+</header>
 
-    <section id="intro" class="s-intro target-section">
-        <div class="s-intro__bg rellax" data-rellax-speed="-7"></div>
+<main>
+  <!-- L1 system context -->
+  <section id="context" class="hero" data-level="1">
+    <div class="wrap hero-grid">
+      <div class="diagram">
+        <svg class="ctx" viewBox="0 0 360 360" role="img" aria-labelledby="ctx-t">
+          <title id="ctx-t">System context: Christian Groth works with teams, translates for product and business, builds and evolves production systems and runs on platform and ops. A visitor is curious about him.</title>
+          <g aria-hidden="true">
+            <line class="edge" x1="180" y1="88" x2="180" y2="170"/>
+            <line class="edge" x1="60" y1="148" x2="130" y2="170"/>
+            <line class="edge" x1="300" y1="148" x2="230" y2="170"/>
+            <line class="edge" x1="64" y1="300" x2="140" y2="250"/>
+            <line class="edge" x1="296" y1="300" x2="220" y2="250"/>
+            <text class="e-label" x="180" y="133" text-anchor="middle">is curious about</text>
+            <text class="e-label" x="88" y="166" text-anchor="middle">works with</text>
+            <text class="e-label" x="272" y="166" text-anchor="middle">translates for</text>
+            <text class="e-label" x="96" y="280" text-anchor="middle">builds &amp; evolves</text>
+            <text class="e-label" x="264" y="280" text-anchor="middle">runs on</text>
+          </g>
+          <g class="per">
+            <circle cx="180" cy="24" r="14" fill="var(--box-strong)"/>
+            <rect x="130" y="40" width="100" height="48" rx="14" fill="var(--box-strong)"/>
+            <text class="n-title" x="180" y="62" text-anchor="middle">Visitor</text>
+            <text class="n-type" x="180" y="76" text-anchor="middle">[Person]</text>
+          </g>
+          <g class="per">
+            <rect x="2" y="104" width="112" height="44" rx="8" fill="var(--box-strong)"/>
+            <text class="n-title" x="58" y="124" text-anchor="middle">Teams</text>
+            <text class="n-type" x="58" y="138" text-anchor="middle">[Person]</text>
+          </g>
+          <g class="per">
+            <rect x="246" y="104" width="112" height="44" rx="8" fill="var(--box-strong)"/>
+            <text class="n-title" x="302" y="124" text-anchor="middle" style="font-size:11px">Product &amp; Business</text>
+            <text class="n-type" x="302" y="138" text-anchor="middle">[Person]</text>
+          </g>
+          <g class="sys">
+            <rect x="105" y="170" width="150" height="80" rx="10" fill="var(--box)"/>
+            <text class="n-title" x="180" y="204" text-anchor="middle" style="font-size:14px">Christian Groth</text>
+            <text class="n-type" x="180" y="220" text-anchor="middle">[Software System]</text>
+          </g>
+          <g class="ext-t">
+            <rect x="4" y="300" width="120" height="44" rx="8" fill="var(--external)"/>
+            <text class="n-title" x="64" y="320" text-anchor="middle">Production Systems</text>
+            <text class="n-type" x="64" y="334" text-anchor="middle">[External System]</text>
+          </g>
+          <g class="ext-t">
+            <rect x="236" y="300" width="120" height="44" rx="8" fill="var(--external)"/>
+            <text class="n-title" x="296" y="320" text-anchor="middle">Platform &amp; Ops</text>
+            <text class="n-type" x="296" y="334" text-anchor="middle">[External System]</text>
+          </g>
+        </svg>
+      </div>
+      <div>
+        <h1>Christian Groth</h1>
+        <p class="role"><img class="avatar" src="assets/avatar.jpg" alt="Christian Groth" width="56" height="56"><strong>Software Architect &amp; Engineer</strong></p>
+        <p class="claim">Shipped today, still changeable tomorrow.</p>
+        <p class="sub">20+ years of turning requirements into software that ships and keeps shipping. Boring tech, no quick &amp; dirty. Kotlin and the JVM at heart.</p>
+        <span class="badge" title="Old motto, still valid"><span>build</span><span>it compiles? ship it!</span></span>
+      </div>
+    </div>
+  </section>
 
-        <div class="row s-intro__content">
-            <div class="column">
-                <div class="s-intro__content-about">
-                    <h1>“It compiles! Ship it!”</h1>
-                    
-                    <h3>Interested in modern <span>software architecture</span>, <span>development</span> and working <span>efficiently</span> in <span>heterogeneous</span> and <span>focused teams</span>.</h3>
+  <!-- L2 containers -->
+  <section id="containers" data-level="2">
+    <div class="wrap">
+      <h2>Containers<span class="h-sub">What I do</span></h2>
+      <p class="lead">Four parts, each with its own job. And they talk to each other all the time.</p>
+      <div class="boundary">
+        <article class="cont">
+          <h3>Engineering</h3>
+          <p class="tech">[Container: hands on the code]</p>
+          <p>Still writing code, rarely less than half my time. Tests that describe behaviour, CI that is allowed to say no.</p>
+        </article>
+        <article class="cont">
+          <h3>Architecture</h3>
+          <p class="tech">[Container: structure that survives change]</p>
+          <p>Hexagonal designs, event-driven systems, modernizing what runs and shaping what's new.</p>
+        </article>
+        <article class="cont alt">
+          <h3>Teams &amp; Collaboration</h3>
+          <p class="tech">[Container: technical leadership]</p>
+          <p>I lead from inside the team as its architect, not from an org chart. The feedback I hear most: I'm good team glue.</p>
+        </article>
+        <article class="cont alt">
+          <h3>Platform &amp; Operations</h3>
+          <p class="tech">[Container: you build it, you run it]</p>
+          <p>Cloud native and Kubernetes, observability built in: if I can't see it in production, it isn't done.</p>
+        </article>
+        <p class="b-label"><strong>Christian Groth</strong> [Software System]</p>
+      </div>
+    </div>
+  </section>
 
-                    <div class="s-intro__content-social">
-                        <a href="https://github.com/christiangroth/" target="_blank">
-                            <i class="fab fa-github" aria-hidden="true"></i>
-                        </a>
-                        <a href="https://www.linkedin.com/in/christian-groth-753a27205/" target="_blank">
-                            <i class="fab fa-linkedin" aria-hidden="true"></i>
-                        </a>
-                        <a href="https://www.xing.com/profile/Christian_Groth3/" target="_blank">
-                            <i class="fab fa-xing" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
+  <!-- L3 components -->
+  <section id="components" data-level="3">
+    <div class="wrap">
+      <h2>Components<span class="h-sub">Selected work</span></h2>
+      <p class="lead">A slice of my side projects. Same cloud native ideas as at work, deliberately on a smaller stack: a handful of apps doesn't need Kubernetes. The rest lives on <a href="https://github.com/christiangroth/" target="_blank" rel="noopener">GitHub</a>. Well, most of it.</p>
+
+      <svg class="comp-map" viewBox="0 0 340 262" role="img" aria-labelledby="cm-t">
+        <title id="cm-t">Component map: james-platform and spotify-control both use the quarkus-outbox library, and all of them run on the self-hosted platform.</title>
+        <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 10 5 0 10z" fill="var(--muted)"/></marker></defs>
+        <rect class="node-frame" x="2" y="2" width="336" height="258" rx="14"/>
+        <g>
+          <rect x="18" y="18" width="142" height="56" rx="9" fill="var(--box)"/>
+          <text class="n-title" x="89" y="42" text-anchor="middle">james-platform</text>
+          <text class="n-type" x="89" y="57" text-anchor="middle">[Container: low-code platform]</text>
+        </g>
+        <g>
+          <rect x="180" y="18" width="142" height="56" rx="9" fill="var(--box)"/>
+          <text class="n-title" x="251" y="42" text-anchor="middle">spotify-control</text>
+          <text class="n-type" x="251" y="57" text-anchor="middle">[Container: playlist manager]</text>
+        </g>
+        <line class="arrow" x1="100" y1="74" x2="148" y2="130" marker-end="url(#ah)"/>
+        <line class="arrow" x1="240" y1="74" x2="192" y2="130" marker-end="url(#ah)"/>
+        <text class="e-label" x="96" y="108" text-anchor="middle">uses</text>
+        <text class="e-label" x="244" y="108" text-anchor="middle">uses</text>
+        <g class="per">
+          <rect x="95" y="132" width="150" height="52" rx="9" fill="var(--box-strong)"/>
+          <text class="n-title" x="170" y="154" text-anchor="middle">quarkus-outbox</text>
+          <text class="n-type" x="170" y="169" text-anchor="middle">[Component: library]</text>
+        </g>
+        <g>
+          <text class="frame-title" x="170" y="222" text-anchor="middle">Self-hosted platform</text>
+          <text class="frame-type" x="170" y="238" text-anchor="middle">[Deployment Node: VPS · Docker Swarm · Traefik]</text>
+        </g>
+      </svg>
+
+      <div class="features">
+        <article class="feature" id="james">
+          <h3><a href="https://github.com/christiangroth/james-platform" target="_blank" rel="noopener">james-platform</a></h3>
+          <p class="tech">[Container: Kotlin · Quarkus · Qute SSR · MongoDB]</p>
+          <dl class="prd">
+            <div><dt>Problem</dt><dd>Every small data app needs the same CRUD, auth and infrastructure boilerplate.</dd></div>
+            <div><dt>Decision</dt><dd>A personal low-code platform: apps are versioned entity definitions, the UI is generated, computed values are Kotlin scripts.</dd></div>
+            <div><dt>Result</dt><dd>Semantic versions derived from schema changes, scripted migrations, aggregations, data import and sharing.</dd></div>
+          </dl>
+          <a class="more" href="https://github.com/christiangroth/james-platform" target="_blank" rel="noopener">View on GitHub →</a>
+        </article>
+        <article class="feature" id="spotify">
+          <h3><a href="https://github.com/christiangroth/spotify-control" target="_blank" rel="noopener">spotify-control</a></h3>
+          <p class="tech">[Container: Kotlin · Quarkus · Qute SSR · MongoDB]</p>
+          <dl class="prd">
+            <div><dt>Problem</dt><dd>Spotify's own playlist handling is too coarse, and Wrapped comes only once a year.</dd></div>
+            <div><dt>Decision</dt><dd>Mirror playback history and playlists locally, enforce playlist rules automatically in a hexagonal Quarkus app.</dd></div>
+            <div><dt>Result</dt><dd>Duplicate-free playlists, album upgrades, yearly union playlists and Wrapped-style statistics on any day.</dd></div>
+          </dl>
+          <a class="more" href="https://github.com/christiangroth/spotify-control" target="_blank" rel="noopener">View on GitHub →</a>
+        </article>
+      </div>
+
+      <ul class="rows">
+        <li id="outbox"><a href="https://github.com/christiangroth/quarkus-outbox" target="_blank" rel="noopener">
+          <h3>quarkus-outbox</h3>
+          <p class="tech">[Component: Quarkus library · MongoDB]</p>
+          <p>The Transactional Outbox both apps rely on: no event lost on a crash, at-least-once delivery with deduplication, priorities and retries.</p>
+        </a></li>
+        <li id="platform"><a href="https://github.com/christiangroth?tab=repositories&amp;q=vps-*&amp;sort=name" target="_blank" rel="noopener">
+          <h3>Self-hosted platform</h3>
+          <p class="tech">[Deployment Node: VPS · Docker Swarm · Traefik · Grafana Cloud]</p>
+          <p>One scripted VPS with Docker Swarm, Traefik and Grafana Cloud monitoring. A new app goes live with a single stack file.</p>
+        </a></li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- L4 code -->
+  <section id="principles" data-level="4">
+    <div class="wrap">
+      <h2>Principles<span class="h-sub">How I work</span></h2>
+      <p class="lead">The rules everything above is built with.</p>
+      <ol class="principles">
+        <li><strong>Done means done right.</strong><span>Shipped and running, on a foundation that doesn't lead into a dead end. Quick &amp; dirty is neither.</span></li>
+        <li><strong>Boring tech wins.</strong><span>Proven tools first. New stuff only where it really pays off.</span></li>
+        <li><strong>Make decisions explicit.</strong><span>ADRs and arc42 next to the code, so the <em>why</em> outlives the people.</span></li>
+        <li><strong>Evolve, don't rewrite.</strong><span>Old or new, every step is shippable.</span></li>
+        <li><strong>Teams over tools.</strong><span>Architecture is a social activity. The best diagram is the one the team draws together.</span></li>
+        <li><strong>Automate the boring parts.</strong><span>Done twice? Script it. Done three times? Put it into CI.</span></li>
+      </ol>
+    </div>
+  </section>
+
+
+  <!-- placeholder data, Chris decides later -->
+  <section id="changelog">
+    <div class="wrap">
+      <h2>Changelog<span class="h-sub">Career</span></h2>
+      <p class="lead">Every system has a history. Here's mine, semantically versioned.</p>
+      <div class="log" role="list" aria-label="Career changelog">
+        <div role="listitem"><span class="v"># [Unreleased]</span></div>
+        <div role="listitem">- Exploring AI coding agents in day-to-day engineering</div>
+        <div role="listitem">- Event sourcing, beyond the conference talks</div>
+        <div role="listitem"><span class="v"># v5.0</span> <span class="c">(2023, current)</span></div>
+        <div role="listitem">- Software architect and developer for municipal and public authority software</div>
+        <div role="listitem">- Technical modernization, and keeping the team afloat between features, deadlines and tech debt</div>
+        <div role="listitem"><span class="v"># v4.0</span> <span class="c">(2018)</span></div>
+        <div role="listitem">- Extension platform turning a classic CMS into the data backbone for headless products</div>
+        <div role="listitem">- Cloud native from day one: Kotlin, Micronaut, RESTHeart, MongoDB, Kubernetes, CI/CD in a DevOps team</div>
+        <div role="listitem">- Grew from developer into the software architect role</div>
+        <div role="listitem"><span class="v"># v3.0</span> <span class="c">(2015)</span></div>
+        <div role="listitem">- SAP Hybris shops: payment providers and promotion engines</div>
+        <div role="listitem">- Systems integration via Data Hub</div>
+        <div role="listitem"><span class="v"># v2.1</span> <span class="c">(2014)</span></div>
+        <div role="listitem">- Master&#39;s degree, studied part-time alongside the job, stopped at ~80 %</div>
+        <div role="listitem">- Turned out passion beats a perfect CV</div>
+        <div role="listitem"><span class="v"># v2.0</span> <span class="c">(2012)</span></div>
+        <div role="listitem">- Product development on JBoss, JSF and OSGi</div>
+        <div role="listitem">- Project work as developer, technical advisor and solution partner</div>
+        <div role="listitem"><span class="v"># v1.1</span> <span class="c">(2007)</span></div>
+        <div role="listitem">- Bachelor in Information Technology, a dual study programme alongside the job</div>
+        <div role="listitem"><span class="v"># v1.0</span> <span class="c">(2005)</span></div>
+        <div role="listitem">- Full stack on a large real estate portal: frontend to CORBA middleware and database</div>
+        <div role="listitem">- Call center and first level support app with complex product configuration, built on a custom persistence framework for generic, dynamic type systems</div>
+        <div role="listitem"><span class="v"># v0.2</span> <span class="c">(2004)</span></div>
+        <div role="listitem">- Student job: a bit of everything, no common thread</div>
+        <div role="listitem"><span class="v"># v0.1</span></div>
+        <div role="listitem">- First lines of code at school</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="external">
+    <div class="wrap">
+      <h2>External Systems<span class="h-sub">Off the clock</span></h2>
+      <div class="off-grid">
+        <div>
+          <div class="person">
+            <img class="portrait" src="assets/avatar.jpg" alt="Christian Groth" width="92" height="92">
+            <div><strong>Christian Groth</strong><span>80s kid. Grew up rewinding tapes, now rolls back releases.</span></div>
+          </div>
+          <blockquote class="quote">Riffs and refactorings. Both need structure, both need feeling.</blockquote>
         </div>
-    </section>
-
-    <section id="about" class="s-about target-section">
-        <div class="row">
-            <div class="column large-3 tab-12">
-                <img class="s-about__pic" src="images/avatar.jpg" alt="">
-            </div>
-            <div class="column large-9 tab-12 s-about__content">
-                <h3>About Me</h3>
-                <p>80s kid, music lover and software development passionist based in Dortmund, Germany. Started my IT path in school. Achieved Bachelor in Information Technology. Dropped Master at around 80%. Life is not about a perfect CV, but passion for what you do. Software development. Software architecture. Art or engineering? Creativity or hard facts? So called soft skills or frameworks and technologies? Keep it balanced.</p>
-
-                <p>Feel free to reach me through my profiles.</p>
-            </div>
+        <div class="ext-list">
+          <div class="ext"><h3>Back Down Scenario</h3><p class="tech">[External System: post rock]</p><p>Music has been running alongside the code for as long as I can remember. <a href="https://backdownscenario.de" target="_blank" rel="noopener">backdownscenario.de</a></p></div>
+          <div class="ext"><h3>Running</h3><p class="tech">[External System: half marathon]</p><p>Chasing a half marathon personal best, but just as happy with a short loop to switch off and breathe.</p></div>
         </div>
-    </section>
+      </div>
+    </div>
+  </section>
 
-    <section id="resume" class="s-resume target-section" style="padding-bottom: 0px;">
-        <div class="row s-resume__section">
-            <div class="column large-3 tab-12">
-                <h3 class="section-header-allcaps">Current Training Topics</h3>
-            </div>
-            <div class="column large-9 tab-12">
-                <div class="resume-block">
-                    <p>
-                    With more than 20 years of experience, anyone could create a page-long list of technical capabilities, frameworks, and libraries. I don't think that would be useful. So I'd like to give you some insights into topics that I'm currently trying to learn or improve. Since this is largely done in my spare time, some of these topics may take some time.
-                    </p>
+  <section id="interfaces">
+    <div class="wrap">
+      <h2>Interfaces<span class="h-sub">Say hi</span></h2>
+      <p class="lead">Curious about something on this page, or just want to talk architecture? These are the public APIs.</p>
+      <div class="icon-links">
+        <a href="https://github.com/christiangroth/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .3a12 12 0 0 0-3.8 23.38c.6.12.83-.26.83-.57L9 21.07c-3.34.72-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.08-.74.09-.73.09-.73 1.2.09 1.83 1.24 1.83 1.24 1.07 1.83 2.81 1.3 3.5 1 .1-.78.42-1.31.76-1.61-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.14-.3-.54-1.52.1-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 0 1 6 0c2.28-1.55 3.29-1.23 3.29-1.23.64 1.66.24 2.88.12 3.18a4.65 4.65 0 0 1 1.23 3.22c0 4.61-2.8 5.62-5.48 5.92.42.36.81 1.1.81 2.22l-.01 3.29c0 .31.2.69.82.57A12 12 0 0 0 12 .3"/></svg>GitHub</a>
+        <a href="https://www.linkedin.com/in/christian-groth-753a27205/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.45 20.45h-3.56v-5.57c0-1.33-.02-3.04-1.85-3.04-1.85 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.37-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.56V9h3.56v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.73v20.54C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.73V1.73C24 .77 23.2 0 22.22 0z"/></svg>LinkedIn</a>
+      </div>
+    </div>
+  </section>
+</main>
 
-                    <p>
-                    To avoid any interpretation as to priority or focus, the topics are in alphabetical order.
-                    </p>
+<footer>
+  <div class="wrap">
+    <span>© 2026 Christian Groth</span>
+    <span>Diagram notation: <a href="https://c4model.com" target="_blank" rel="noopener">C4 model</a> · <a href="privacy/">Privacy</a></span>
+  </div>
+</footer>
 
-                    <ul class="skill-bars-fat">
-                        <li>
-                            <div class="progress percent35"></div>
-                            <strong>AI Coding Agents</strong>
-                        </li>
-                        <li>
-                            <div class="progress percent75"></div>
-                            <strong>Event Sourcing</strong>
-                        </li>
-                        <li>
-                            <div class="progress percent65"></div>
-                            <strong>Software Modernization</strong>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <footer class="s-footer">
-        <div class="row">
-            <div class="column large-4 medium-6 w-1000-stack s-footer__social-block">
-                <ul class="s-footer__social">
-                    <li>
-                        <a href="https://github.com/christiangroth/" target="_blank">
-                            <i class="fab fa-github" aria-hidden="true"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://www.linkedin.com/in/christian-groth-753a27205/" target="_blank">
-                            <i class="fab fa-linkedin" aria-hidden="true"></i>
-                        </a>
-                    </li>
-                    <li>
-                        <a href="https://www.xing.com/profile/Christian_Groth3/" target="_blank">
-                            <i class="fab fa-xing" aria-hidden="true"></i>
-                        </a>
-                    </li>
-                </ul>
-            </div>
+<script>
 
-            <div class="column large-7 medium-6 w-1000-stack ss-copyright">
-                <span>© Christian Groth 2022</span>
-                <span>Design by <a href="https://www.styleshout.com/" target="_blank" class="subtle">StyleShout</a></span>
-                <span>Header photo by <a href="https://unsplash.com/@faceline?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText" target="_blank" class="subtle">Thomas Martinsen</a> on <a href="https://unsplash.com/?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText"target="_blank" class="subtle">Unsplash</a></span>
-            </div>
-        </div>
+  // mobile menu reuses the inline nav
+  const menu = document.querySelector('.menu');
+  menu.querySelector('nav').innerHTML = document.querySelector('.inline-nav').innerHTML;
+  menu.addEventListener('click', e => { if (e.target.closest('a')) menu.open = false; });
+  document.addEventListener('click', e => { if (menu.open && !menu.contains(e.target)) menu.open = false; });
 
-        <div class="ss-go-top">
-            <a class="smoothscroll" title="Back to Top" href="#top">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 4h12v2H6zm5 10v6h2v-6h5l-6-6-6 6z"/></svg>
-             </a>
-        </div>
-    </footer>
+  // light/dark toggle, remembered on this device only; in the bar on desktop, inside the menu on phones
+  const root = document.documentElement;
+  const currentTheme = () => root.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+  const menuTheme = document.createElement('button');
+  menuTheme.type = 'button';
+  menuTheme.className = 'menu-theme';
+  const label = () => { menuTheme.textContent = currentTheme() === 'dark' ? 'Light mode' : 'Dark mode'; };
+  const toggleTheme = () => {
+    const next = currentTheme() === 'dark' ? 'light' : 'dark';
+    root.dataset.theme = next;
+    try { localStorage.setItem('theme', next); } catch (e) {}
+    label();
+  };
+  label();
+  menu.querySelector('nav').appendChild(menuTheme);
+  menuTheme.addEventListener('click', toggleTheme);
+  document.querySelector('.theme-toggle').addEventListener('click', toggleTheme);
 
-    <script src="js/plugins.js"></script>
-    <script src="js/main.js"></script>
+
+  // current section + C4 zoom level in the bar
+  const here = document.getElementById('here');
+  const lv = [...document.querySelectorAll('.here rect')];
+  const navLinks = [...document.querySelectorAll('.inline-nav a, .menu nav a')];
+  const sections = [...document.querySelectorAll('main > section')];
+  const setActive = section => {
+    const id = '#' + section.id;
+    const level = +(section.dataset.level || 0);
+    navLinks.forEach(a => a.classList.toggle('active', a.hash === id));
+    here.textContent = (navLinks.find(a => a.hash === id) || {}).textContent || '';
+    lv.forEach((r, i) => r.classList.toggle('on', i < level));
+  };
+  const atBottom = () => innerHeight + scrollY >= document.documentElement.scrollHeight - 4;
+  const io = new IntersectionObserver(entries => entries.forEach(e => {
+    if (e.isIntersecting && !atBottom()) setActive(e.target);
+  }), { rootMargin: '-45% 0px -50% 0px' });
+  sections.forEach(s => io.observe(s));
+  // the last section is too short to ever reach the middle of the screen
+  addEventListener('scroll', () => { if (atBottom()) setActive(sections[sections.length - 1]); }, { passive: true });
+  navLinks.forEach(a => a.addEventListener('click', () => {
+    const target = document.querySelector(a.hash);
+    if (target) setActive(target);
+  }));
+</script>
 </body>
 </html>

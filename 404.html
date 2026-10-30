@@ -1,54 +1,29 @@
 <!DOCTYPE html>
-<html class="no-js" lang="en">
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>Christian Groth</title>
-    <meta name="author" content="Christian Groth">
-
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/vendor.css">
-
-    <script defer src="js/vendor/fontawesome/all.min.js"></script>
-
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <link rel="manifest" href="site.webmanifest">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>404 · Christian Groth</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="stylesheet" href="/assets/base.css?v=2">
+<script>
+  try { const t = localStorage.getItem('theme'); if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t; } catch (e) {}
+</script>
+<style>
+  body { min-height: 100svh; display: grid; place-items: center; }
+  main { padding: 48px 0; }
+  .code { font: 700 14px/1.6 var(--mono); color: var(--accent); }
+  h1 { font-size: clamp(34px, 9vw, 52px); letter-spacing: -.03em; }
+  p { color: var(--muted); font-size: 17px; }
+</style>
 </head>
-<body id="top" class="ss-preload">
-    <div id="preloader">
-        <div id="loader"></div>
-    </div>
-
-    <section id="intro" class="s-intro target-section">
-        <div class="s-intro__bg rellax" data-rellax-speed="-7"></div>
-
-        <div class="row s-intro__content">
-            <div class="column">
-                <div class="s-intro__content-about">
-                    <h1>“Nothing here!”</h1>
-                    
-                    <h3>Someone took a wrong turn. Maybe try <a href="/">going home</a>.</h3>
-
-                    <div class="s-intro__content-social">
-                        <a href="https://github.com/christiangroth/" target="_blank">
-                            <i class="fab fa-github" aria-hidden="true"></i>
-                        </a>
-                        <a href="https://www.linkedin.com/in/christian-groth-753a27205/" target="_blank">
-                            <i class="fab fa-linkedin" aria-hidden="true"></i>
-                        </a>
-                        <a href="https://www.xing.com/profile/Christian_Groth3/" target="_blank">
-                            <i class="fab fa-xing" aria-hidden="true"></i>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <script src="js/plugins.js"></script>
-    <script src="js/main.js"></script>
+<body>
+<main class="wrap">
+  <p class="code"># 404 Not Found</p>
+  <h1>This component doesn't exist.</h1>
+  <p>Maybe it was refactored away. The <a href="/">system context</a> is still there.</p>
+</main>
 </body>
 </html>
